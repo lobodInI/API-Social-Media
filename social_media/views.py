@@ -44,7 +44,7 @@ class PostViewSet(viewsets.ModelViewSet):
             return LikeSerializer
         if self.action == "upload_image":
             return PostImageSerializer
-        return PostSerializer
+        return self.serializer_class
 
     @action(
         detail=True,
@@ -128,7 +128,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             return CommentListSerializer
         if self.action == "retrieve":
             return CommentDetailSerializer
-        return CommentSerializer
+        return self.serializer_class
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
