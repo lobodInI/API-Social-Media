@@ -10,12 +10,12 @@ class LikeSerializer(serializers.ModelSerializer):
         fields = ("id", "author", "post")
 
     def validate(self, data):
-        like = Like.objects.filter(
+        user_like = Like.objects.filter(
             post_id=data["post"], author_id=data["author"]
         )
-        if like:
+        if user_like:
             raise serializers.ValidationError(
-                "You had already liked this post")
+                "Your like has already been taken")
         return data
 
 
@@ -51,39 +51,6 @@ class CommentListSerializer(serializers.ModelSerializer):
         )
 
 
-class CommentPostSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        slug_field="nickname", many=False, read_only=True
-    )
-
-    class Meta:
-        model = Post
-        fields = (
-            "id",
-            "post",
-            "content",
-            "author",
-            "created_at",
-        )
-
-
-class CommentDetailSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        slug_field="nickname", many=False, read_only=True
-    )
-    post = CommentPostSerializer(many=False, read_only=True)
-
-    class Meta:
-        model = Comment
-        fields = (
-            "id",
-            "post",
-            "content",
-            "author",
-            "created_at",
-        )
-
-
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
@@ -94,6 +61,23 @@ class PostSerializer(serializers.ModelSerializer):
             "hashtag",
             "content",
             "image",
+        )
+
+
+class CommentDetailSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        slug_field="nickname", many=False, read_only=True
+    )
+    post = PostSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = (
+            "id",
+            "post",
+            "content",
+            "author",
+            "created_at",
         )
 
 
