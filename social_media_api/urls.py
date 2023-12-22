@@ -25,9 +25,15 @@ from drf_spectacular.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/user/", include("user.urls", namespace="user")),
-    path("api/social_media/", include("social_media.urls", namespace="social_media",)),
+    path(
+        "api/social_media/",
+        include(
+            "social_media.urls",
+            namespace="social_media",
+        ),
+    ),
     path(
         "api/schema/",
         SpectacularAPIView.as_view(),
@@ -39,8 +45,6 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path(
-        "api/doc/redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc"
+        "api/doc/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

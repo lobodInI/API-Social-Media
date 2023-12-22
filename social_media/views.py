@@ -17,7 +17,7 @@ from social_media.serializers import (
     PostSerializer,
     PostListSerializer,
     PostDetailSerializer,
-    PostImageSerializer
+    PostImageSerializer,
 )
 
 
@@ -30,7 +30,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.select_related("author")
     serializer_class = PostSerializer
     pagination_class = PostPagination
-    permission_classes = (IsAuthorOrReadOnly, )
+    permission_classes = (IsAuthorOrReadOnly,)
 
     filter_backends = [filters.SearchFilter]
     search_fields = ["hashtag"]
@@ -50,31 +50,36 @@ class PostViewSet(viewsets.ModelViewSet):
         detail=True,
         methods=["POST"],
         permission_classes=[IsAuthenticated],
-        url_path="like"
+        url_path="like",
     )
     def like(self, request, pk):
-        post = get_object_or_404(Post, id=pk, )
+        post = get_object_or_404(
+            Post,
+            id=pk,
+        )
         author = request.user
-        serializer = LikeSerializer(
-            data={
-                "post": post.id,
-                "author": author.id
-            })
+        serializer = LikeSerializer(data={"post": post.id, "author": author.id})
         serializer.is_valid(
             raise_exception=True,
         )
         serializer.save()
         response_serializer = PostDetailSerializer(post)
-        return Response(response_serializer.data, status=status.HTTP_200_OK, )
+        return Response(
+            response_serializer.data,
+            status=status.HTTP_200_OK,
+        )
 
     @action(
         detail=True,
         methods=["POST"],
         permission_classes=[IsAuthenticated],
-        url_path="unlike"
+        url_path="unlike",
     )
     def unlike(self, request, pk):
-        post = get_object_or_404(Post, id=pk, )
+        post = get_object_or_404(
+            Post,
+            id=pk,
+        )
         author = request.user
         user_like = Like.objects.filter(
             post__id=post.id,
@@ -90,7 +95,7 @@ class PostViewSet(viewsets.ModelViewSet):
         detail=True,
         methods=["POST"],
         permission_classes=[IsAuthenticated],
-        url_path="upload_image"
+        url_path="upload_image",
     )
     def upload_image(self, request, pk=None):
         comment = self.get_object()
@@ -114,7 +119,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.select_related("post")
     serializer_class = CommentSerializer
     pagination_class = PostPagination
-    permission_classes = (IsAuthorOrReadOnly, )
+    permission_classes = (IsAuthorOrReadOnly,)
 
     def get_serializer_class(self):
         if self.action == "list":

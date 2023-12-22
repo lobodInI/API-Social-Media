@@ -53,7 +53,7 @@ class User(AbstractUser):
         blank=True,
         upload_to=user_image_file_path,
     )
-    city = models. CharField(max_length=255, null=True, blank=True)
+    city = models.CharField(max_length=255, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)
     date_registration = models.DateField(auto_now_add=True)

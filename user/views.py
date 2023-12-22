@@ -84,10 +84,7 @@ class UserFollow(APIView):
         user = request.user
         follower = self.get_object(pk)
         if user != follower:
-            UserFollowing.objects.create(
-                user_id=user,
-                user_following=follower
-            )
+            UserFollowing.objects.create(user_id=user, user_following=follower)
             serializer = UserDetailSerializer(follower)
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -96,8 +93,7 @@ class UserFollow(APIView):
         user = request.user
         follower = self.get_object(pk)
         following = UserFollowing.objects.filter(
-            user_id=user,
-            user_following=follower
+            user_id=user, user_following=follower
         ).first()
         following.delete()
         serializer = UserDetailSerializer(follower)

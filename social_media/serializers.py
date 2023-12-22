@@ -4,23 +4,18 @@ from social_media.models import Post, Comment, Like
 
 
 class LikeSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Like
         fields = ("id", "author", "post")
 
     def validate(self, data):
-        user_like = Like.objects.filter(
-            post_id=data["post"], author_id=data["author"]
-        )
+        user_like = Like.objects.filter(post_id=data["post"], author_id=data["author"])
         if user_like:
-            raise serializers.ValidationError(
-                "Your like has already been taken")
+            raise serializers.ValidationError("Your like has already been taken")
         return data
 
 
 class CommentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Comment
         fields = (
@@ -36,9 +31,7 @@ class CommentListSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         slug_field="nickname", many=False, read_only=True
     )
-    post = serializers.SlugRelatedField(
-        slug_field="title", many=False, read_only=True
-    )
+    post = serializers.SlugRelatedField(slug_field="title", many=False, read_only=True)
 
     class Meta:
         model = Comment
