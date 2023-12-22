@@ -1,10 +1,12 @@
 from django.db.models import Count
 from django.http import Http404
+
 from rest_framework import generics, viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import filters
+
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenBlacklistView
 
@@ -46,7 +48,6 @@ class UserDetailView(generics.RetrieveAPIView):
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class UserUpdateView(generics.RetrieveUpdateAPIView):
