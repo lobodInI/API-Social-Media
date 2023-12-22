@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, QuerySet
 from django.http import Http404
 
 from rest_framework import generics, viewsets, status
@@ -27,7 +27,7 @@ class UserListView(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["nickname", "city"]
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         queryset = self.queryset.annotate(
             count_following=Count("following"),
             count_followers=Count("followers"),
@@ -75,12 +75,12 @@ class UserFollow(APIView):
         except User.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk):
+    def get(self, request, pk) -> Response:
         user = self.get_object(pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    def post(self, request, pk):
+    def post(self, request, pk) -> Response:
         user = request.user
         follower = self.get_object(pk)
         if user != follower:
@@ -89,7 +89,7 @@ class UserFollow(APIView):
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
+    def delete(self, request, pk) -> Response:
         user = request.user
         follower = self.get_object(pk)
         following = UserFollowing.objects.filter(
@@ -114,7 +114,7 @@ class LogoutUserView(TokenBlacklistView):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> Response:
         response = super().post(request, *args, **kwargs)
         if response.status_code == 200:
             return Response({"detail": "Logged out successfully"}, status=200)

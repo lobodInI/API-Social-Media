@@ -1,3 +1,5 @@
+from typing import Type
+
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
@@ -5,7 +7,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework.serializers import Serializer
 
 from social_media.models import Post, Comment, Like
 from social_media.permissions import IsAuthorOrReadOnly
@@ -35,7 +37,7 @@ class PostViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ["hashtag"]
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return PostListSerializer
         if self.action == "retrieve":
@@ -52,7 +54,7 @@ class PostViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated],
         url_path="like",
     )
-    def like(self, request, pk):
+    def like(self, request, pk) -> Response:
         post = get_object_or_404(
             Post,
             id=pk,
@@ -108,7 +110,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer) -> None:
         serializer.save(author=self.request.user)
 
 
@@ -123,12 +125,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = PostPagination
     permission_classes = (IsAuthorOrReadOnly,)
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return CommentListSerializer
         if self.action == "retrieve":
             return CommentDetailSerializer
         return self.serializer_class
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer) -> None:
         serializer.save(author=self.request.user)

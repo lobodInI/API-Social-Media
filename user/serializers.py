@@ -87,11 +87,11 @@ class UserDetailSerializer(UserSerializer):
             "followers",
         )
 
-    def get_following(self, instance):
+    def get_following(self, instance) -> dict:
         result = UserFollowingSerializer(instance.following.all(), many=True)
         return result.data
 
-    def get_followers(self, instance):
+    def get_followers(self, instance) -> dict:
         result = UserFollowersSerializer(instance.followers.all(), many=True)
         return result.data
 
