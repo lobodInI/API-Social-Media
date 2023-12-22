@@ -87,12 +87,12 @@ class UserDetailSerializer(UserSerializer):
             "followers",
         )
 
-    def get_following(self, obj):
-        result = UserFollowingSerializer(obj.following.all(), many=True)
+    def get_following(self, instance):
+        result = UserFollowingSerializer(instance.following.all(), many=True)
         return result.data
 
-    def get_followers(self, obj):
-        result = UserFollowersSerializer(obj.followers.all(), many=True)
+    def get_followers(self, instance):
+        result = UserFollowersSerializer(instance.followers.all(), many=True)
         return result.data
 
 
@@ -102,7 +102,7 @@ class UserFollowingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserFollowing
-        fields = ("id", "nickname")
+        fields = ("id", "nickname",)
 
 
 class UserFollowersSerializer(serializers.ModelSerializer):
@@ -110,4 +110,4 @@ class UserFollowersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserFollowing
-        fields = ("user_id", "nickname")
+        fields = ("user_id", "nickname",)

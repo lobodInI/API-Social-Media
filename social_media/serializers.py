@@ -6,7 +6,7 @@ from social_media.models import Post, Comment, Like
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = ("id", "author", "post")
+        fields = ("id", "author", "post",)
 
     def validate(self, data):
         user_like = Like.objects.filter(
@@ -129,7 +129,7 @@ class PostLikeSerializer(LikeSerializer):
 
     class Meta:
         model = Like
-        fields = ("id", "author")
+        fields = ("id", "author",)
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -159,4 +159,4 @@ class PostImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ("id", "image")
+        fields = ("id", "image",)

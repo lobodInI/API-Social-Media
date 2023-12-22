@@ -51,7 +51,7 @@ class Comment(models.Model):
     content = models.TextField()
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["-created_at",]
 
 
 class Like(models.Model):

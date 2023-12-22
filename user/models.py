@@ -59,7 +59,7 @@ class User(AbstractUser):
     date_registration = models.DateField(auto_now_add=True)
     username = None
     email = models.EmailField(
-        _("email address"),
+        _("email address",),
         unique=True,
     )
 
@@ -82,4 +82,4 @@ class UserFollowing(models.Model):
     )
 
     class Meta:
-        unique_together = ("user_id", "user_following")
+        unique_together = ("user_id", "user_following",)
