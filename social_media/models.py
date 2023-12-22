@@ -45,6 +45,7 @@ class Comment(models.Model):
     author = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
+        related_name="comments",
     )
     created_at = models.DateField(auto_now_add=True)
     content = models.TextField()
@@ -62,4 +63,5 @@ class Like(models.Model):
     author = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
+        related_name="likes",
     )
