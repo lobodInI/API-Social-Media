@@ -87,11 +87,11 @@ class PostListSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
 
-    def get_comments_count(self, obj):
-        return obj.comments.count()
+    def get_comments_count(self, instance) -> int:
+        return instance.comments.count()
 
-    def get_likes_count(self, obj):
-        return obj.likes.count()
+    def get_likes_count(self, instance) -> int:
+        return instance.likes.count()
 
     class Meta:
         model = Post
