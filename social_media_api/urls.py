@@ -41,10 +41,11 @@ urlpatterns = [
     ),
     path(
         "api/doc/swagger/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
+        SpectacularSwaggerView.as_view(),
         name="swagger-ui",
     ),
     path(
-        "api/doc/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"
+        "api/doc/redoc/",
+        SpectacularRedocView.as_view(), name="redoc"
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

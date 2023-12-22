@@ -58,7 +58,9 @@ class PostViewSet(viewsets.ModelViewSet):
             id=pk,
         )
         author = request.user
-        serializer = LikeSerializer(data={"post": post.id, "author": author.id})
+        serializer = LikeSerializer(
+            data={"post": post.id, "author": author.id}
+        )
         serializer.is_valid(
             raise_exception=True,
         )
